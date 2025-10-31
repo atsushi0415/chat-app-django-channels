@@ -1,4 +1,4 @@
-# 💬 【プロジェクト名】 - リアルタイムチャットアプリケーション
+# 💬 リアルタイムチャットアプリケーション
 
 > **Django Channels**と**WebSocket**を利用した、ユーザー認証・フレンド機能付きのリアルタイムコミュニケーションアプリ。
 
@@ -74,7 +74,7 @@
 
 ### ④ ユーザー体験(UX)を意識したUI/JavaScript制御
 
-* **実装内容**: 【chat_room.html】では、チャットログのフォームを上部に配置し、ログ表示エリアに枠線と**最小高さを設定**することで、メッセージがない状態でもレイアウトが崩れないよう配慮しました。
+* **実装内容**: 【chat\_room.html】では、チャットログのフォームを上部に配置し、ログ表示エリアに枠線と**最小高さを設定**することで、メッセージがない状態でもレイアウトが崩れないよう配慮しました。
 * **JavaScript制御**: フレンド検索結果や申請ボタンの表示・非表示を、サーバーサイドのコンテキスト（`{{ found_user }}`や`{{ friend_request }}`）に応じてJavaScriptで動的に制御し、**不要な画面遷移を防ぐ**UXを追求しました。
 
 ---
@@ -101,8 +101,8 @@
 
 1.  **リポジトリのクローン**
     ```bash
-    git clone [https://github.com/YourUsername/your-chat-app.git](https://github.com/YourUsername/your-chat-app.git)
-    cd your-chat-app
+    git clone [https://github.com/atsushi0415/chat-app-django-channels](https://github.com/atsushi0415/chat-app-django-channels)
+    cd chat-app-django-channels
     ```
 
 2.  **仮想環境の構築と有効化**
@@ -132,7 +132,7 @@
 
     > 💡 **重要**: Django ChannelsによるWebSocketを正しく動作させるには、非同期をサポートするサーバー（Daphneなど）が必要です。`python manage.py runserver` ではなく、以下のコマンドで起動してください。
     ```bash
-    # myproject の部分は、ご自身のプロジェクト名に合わせて修正してください
+    # [myproject] の部分は、ご自身のプロジェクト名に合わせて修正してください
     daphne -b 0.0.0.0 -p 8000 [myproject].asgi:application
     ```
 
