@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ホーム画面</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>チャットへようこそ {{ username }} さん</h2>
+        </div>
+    </header>
+
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+
+    <div class="main-content">
+        <div class="home-side">
+            <p><a href="{% url 'login' %}">ログアウト</a></p>
+            <p><a href="{% url 'select_room' %}">ルーム作成</a></p>
+            <p><a href="{% url 'mypage'%}">マイページ</a></p>
+            <p><a href="{% url 'search_friend' %}">フレンド検索</a></p>
+        </div>
+
+        <div class="home-chat">
+            <h2>オープンチャットルーム</h2>
+            <ul>
+                {% for room in rooms %}
+                <li><a href="{% url 'chat_room' room_name=room.name %}">{{ room.name }}</a></li>
+                {% empty %}
+                <li>まだルームがありません。</li>
+                {% endfor %}
+            </ul>
+
+            <h2>フレンドチャットルーム</h2>
+            <ul>
+                {% for room in friend_rooms %}
+                <li>
+                    <a href="{% url 'chat_room' room_name=room.name %}">
+                        {{ room.name }} ({{ room.partner }} とのチャット)
+                    </a>
+                </li>
+                {% empty %}
+                <li>まだルームがありません。</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+</html>

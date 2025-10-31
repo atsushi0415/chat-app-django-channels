@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>マイページ: {{ username }}</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="home-side">
+            <p><a href="{% url 'home' %}">ホーム</a></p>
+            <p><a href="{% url 'mypage'%}">マイページ</a></p>
+            <p><a href="{% url 'select_room' %}">ルーム作成</a></p>
+            <p><a href="{% url 'search_friend' %}">フレンド検索</a></p>
+            <p><a href="{% url 'login' %}">ログアウト</a></p>
+        </div>
+        
+        <div class="home-chat">
+            <h2>ユーザー情報</h2>
+            <p><a href="{% url 'change_info'%}">ユーザー情報変更</a></p>
+            <p>ユーザーネーム : **{{ username }}**</p>
+            <p>フレンドコード : **{{user_code.friend_code}}**</p>
+            <p>自己紹介 : {{user_code.introduce}}</p>
+            <p>趣味 : {{user_code.hobby}}</p>
+
+            <hr>
+
+            <h2>フレンド一覧</h2>
+            <ul>
+                {% for f in friend %}
+                <li>
+                    {% if f.user.id == request.user.id %}
+                    <a href="{% url 'friend_page' friend_id=f.friend.id %}">{{ f.friend.username }}</a>
+                    {% else %}
+                    <a href="{% url 'friend_page' friend_id=f.user.id %}">{{ f.user.username }}</a>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li>フレンドはまだいません。</li>
+                {% endfor %}
+            </ul>
+
+            <hr>
+
+            <h2>申請されたフレンド</h2>
+            <ul>
+                {% for f in no_friend %}
+                <li><a href="{% url 'friend_page' friend_id=f.user.id %}" class="request-link">{{ f.user.username }}</a> - **承認待ち**</li>
+                {% empty %}
+                <li>申請中のフレンドはいません。</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

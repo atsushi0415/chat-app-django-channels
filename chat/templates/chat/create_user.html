@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'login' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>新規登録</h2>
+        </div>
+    </header>
+
+    <div class="main-content-full">
+        <div class="form-container">
+            <form method="post" action="{% url 'create_user' %}">
+                {% csrf_token %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <label for="username">ユーザー名:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">パスワード:</label>
+                <input type="password" id="password" name="password" required>
+                <label for="again_pass">パスワード確認:</label>
+                <input type="password" id="again_pass" name="again_pass" required>
+                <button type="submit">登録</button>
+            </form>
+            <P><a href="{% url 'login'%}">ログイン画面</a></P>
+        </div>
+    </div>
+</body>
+
+</html>

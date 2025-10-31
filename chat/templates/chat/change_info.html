@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー情報変更</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>情報変更</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="home-side">
+            <p><a href="{% url 'home' %}">ホーム</a></p>
+            <p><a href="{% url 'mypage'%}">マイページ</a></p>
+            <p><a href="{% url 'select_room' %}">ルーム作成</a></p>
+            <p><a href="{% url 'search_friend' %}">フレンド検索</a></p>
+            <p><a href="{% url 'login' %}">ログアウト</a></p>
+        </div>
+
+        <div class="home-chat">
+            <p><a href="{% url 'mypage' %}" class="back-link">マイページへ戻る</a></p>
+            
+            <h2>現在の情報</h2>
+            <p>自己紹介 : **{{ user_code.introduce }}**</p>
+            <p>趣味 : **{{ user_code.hobby }}**</p>
+
+            <div class="form-container" style="max-width: 100%; margin: 20px 0;">
+                <form method="post">
+                    {% csrf_token %}
+                    <h2>変更後の情報</h2>
+                    <label>自己紹介</label>
+                    <input id="change_intro" name="change_intro" placeholder="自己紹介を書く">
+                    <br>
+                    <label>趣味</label>
+                    <input id="change_hobby" name="change_hobby" placeholder="趣味を書く">
+                    <br>
+                    <button type="submit" id="change_info">更新</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

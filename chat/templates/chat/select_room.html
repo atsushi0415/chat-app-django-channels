@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ルーム選択</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>ルーム作成</h2>
+        </div>
+    </header>
+
+    <div class="main-content-full">
+        <h1>オープン or フレンド作り</h1>
+        <p><a href="{% url 'create_open_room' %}">オープンルームを作る</a></p>
+        <p><a href="{% url 'create_friend_room' %}">フレンドルームを作る</a></p>
+    </div>
+</body>
+
+</html>

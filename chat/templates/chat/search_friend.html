@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    <title>フレンド検索</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>フレンド検索</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="home-side">
+            <p><a href="{% url 'home' %}">ホーム</a></p>
+            <p><a href="{% url 'mypage'%}">マイページ</a></p>
+            <p><a href="{% url 'select_room' %}">ルーム作成</a></p>
+            <p><a href="{% url 'search_friend' %}">フレンド検索</a></p>
+            <p><a href="{% url 'login' %}">ログアウト</a></p>
+        </div>
+
+        <div class="home-chat">
+            <p><a href="{% url 'home' %}">ホームへ戻る</a></p>
+
+            <div class="form-container" style="max-width: 100%; margin: 20px 0;">
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="friend_code">フレンドコード:</label>
+                    <input type="number" id="friend_code" name="friend_code" required>
+                    <button type="submit" id="btn">検索</button>
+                </form>
+            </div>
+
+            <div class="messages">
+                {% for message in messages %}
+                <p>{{message}}</p>
+                {% endfor %}
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div id="hidden" class="hidden" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                    <p id="search"></p>
+                    <input type="hidden" id="search_user" name="search_user">
+                    <button type="submit" id="yes" name="yes" style="display: inline-block; width: auto; margin-right: 10px;">はい</button>
+                    <button type="submit" id="no" name="no" style="display: inline-block; width: auto;">いいえ</button>
+                </div>
+            </form>
+
+            <script>
+                var found_user = '{{found_user.user}}';
+                const hidden = document.getElementById('hidden');
+                
+                if (found_user) {
+                    hidden.classList.remove('hidden');
+                    document.getElementById("search").innerHTML = `ユーザー名: **${found_user}** をフレンドに追加しますか？`;
+                    document.getElementById("search_user").value = found_user;
+                }
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+# Webフレームワーク本体 (バージョンは4.2系を使用)
+Django~=4.2
+
+# リアルタイム通信 (WebSocket) のためのライブラリ
+channels~=4.0
+
+# ASGIサーバー。非同期通信を処理するため、Djangoのrunserverの代わりに使用。
+daphne~=4.0
+
+# ASGI (Asynchronous Server Gateway Interface) の基本ライブラリ。Channelsの動作に必須。
+asgiref~=3.7
+
+
+# 【推奨パッケージ / 開発補助 (必要に応じてコメントアウトを解除)】
+
+# 環境変数を安全に管理するために使用します (.envファイルを使用する場合に必須)
+# python-dotenv~=1.0
+
+# 本番環境でチャンネルレイヤーのバックエンドにRedisを使う場合に必要
+# redis~=5.0

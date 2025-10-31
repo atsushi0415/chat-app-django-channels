@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フレンドページ</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> </head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>フレンド情報: {{ friend_user }}</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="home-side">
+            <p><a href="{% url 'home' %}">ホーム</a></p>
+            <p><a href="{% url 'mypage'%}">マイページ</a></p>
+            <p><a href="{% url 'select_room' %}">ルーム作成</a></p>
+            <p><a href="{% url 'search_friend' %}">フレンド検索</a></p>
+            <p><a href="{% url 'login' %}">ログアウト</a></p>
+        </div>
+        
+        <div class="home-chat">
+            <p><a href="{% url 'home' %}">ホームへ戻る</a></p>
+            
+            <h2>{{ friend_user }} の情報</h2>
+            <p>ユーザー名: **{{ friend_user }}**</p>
+            <p>自己紹介 : {{ no_friend.introduce }}</p>
+            <p>趣味 : {{ no_friend.hobby }}</p>
+
+            <hr>
+
+            <div class="form-container" style="max-width: 100%; margin: 20px 0;">
+                <div class="hidden" id="yet_hidden">
+                    <h3>フレンドリクエスト</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <label>フレンドに追加しますか？</label>
+                        <br>
+                        <button type="submit" id="yes" name="yes">はい</button>
+                        <button type="submit" id="no" name="no">いいえ</button>
+                    </form>
+                </div>
+
+                <div class="hidden" id="delete_hidden">
+                    <form method="post">
+                        {% csrf_token %}
+                        <h3>フレンドを削除</h3>
+                        <p>{{friend_user}}を削除しますか？</p>
+                        <button type="submit" id="delete" name="delete">削除</button>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                // JavaScriptのコードはそのまま維持します
+                const friend_request = "{{friend_request.request}}";
+                const yet_hidden = document.getElementById('yet_hidden');
+                const delete_hidden = document.getElementById('delete_hidden');
+
+                if (friend_request === '0') {
+                    // リクエストが来ていてまだフレンドではない状態
+                    yet_hidden.classList.remove('hidden');
+                } else if (friend_request === '1') {
+                    // フレンドの状態
+                    delete_hidden.classList.remove('hidden');
+                }
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

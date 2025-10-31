@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フレンドルーム作成</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>フレンドルーム作成</h2>
+        </div>
+    </header>
+
+    <div class="main-content-full">
+        <p><a href="{% url 'home' %}">ホーム</a></p>
+        <p><a href="{% url 'select_room' %}">ルーム選択画面</a></p>
+
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <label for="room_name">ルーム名(英数字のみ):</label>
+                <input type="text" pattern="^[a-zA-Z0-9]+$" id="room_name" name="room_name" required>
+                <br>
+                <label for="select_friend_name">フレンド選択:</label>
+                <select id="select_friend_name" , name="select_friend_name">
+                    <option value="">選択してください</option>
+                    {% for friend in friend_name %}
+                    <option value="{{ friend.friend.id }}">{{friend.friend}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">作成</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+# Byte-compiled / temporary files
+__pycache__/
+*.pyc
+
+# IDE files (VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Environment files
+# ★これが最重要！シークレットキーを隠します
+.env
+
+# Virtual environment
+venv/
+env/
+
+# Django files
+db.sqlite3  # ローカルDBは含めない
+/media
+/static

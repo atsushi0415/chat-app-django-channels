@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{{ room_name }}</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="home-h1">
+            <h1><a href="{% url 'home' %}">チャットアプリ</a></h1>
+        </div>
+        <div class="home-h2">
+            <h2>ルーム: {{ room_name }}</h2>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="home-side user_list_container">
+            <h3>接続中のユーザー</h3>
+            <ul id="user-list">
+                </ul>
+        </div>
+        
+        <div class="home-chat">
+            <p><a href="{% url 'home' %}">ホームへ戻る</a></p>
+            
+            <div class="messages">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-container" style="max-width: 100%; margin: 20px 0; border: none; background: none; padding: 0;">
+                <form id="chat-form">
+                    {% csrf_token %}
+                    <input id="chat-message-input" type="text" placeholder="メッセージを入力">
+                    <button id="chat-message-submit" type="submit">送信</button>
+                </form>
+            </div>
+            
+            <hr> <div class="chat_border">
+                <ul id="chat-log"></ul>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        function updateUserList(users) {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            users.forEach(username => {
+                const li = document.createElement('li');
+                li.textContent = username;
+                userList.appendChild(li);
+            });
+        }
+        
+        const roomName = "{{ room_name }}"; 
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/chat/' + roomName + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if (data.type === 'user_list_update') {
+                updateUserList(data.users);
+            } else if (data.type === 'chat_message') {
+                const chatLog = document.getElementById('chat-log');
+                const newMessage = document.createElement('li');
+                let date;
+                if (typeof data.timestamp === 'string' || typeof data.timestamp === 'number') {
+                    let ts = data.timestamp;
+                    if (ts < 100000000000) { 
+                        ts = ts * 1000;
+                    }
+                    date = new Date(ts);
+                } else {
+                    date = new Date(); 
+                }
+
+                let formattedTime;
+                if (isNaN(date.getTime())) {
+                    formattedTime = '時刻不明'; 
+                } else {
+                    const year = String(date.getFullYear());
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    const second = String(date.getSeconds()).padStart(2, '0');
+                    
+                    formattedTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+                }
+                
+                newMessage.textContent = `${data.username} ${formattedTime}: ${data.message}`;
+                
+                chatLog.appendChild(newMessage);
+            }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.getElementById('chat-form').onsubmit = function(e) {
+            e.preventDefault();
+
+            const messageInputDom = document.getElementById('chat-message-input');
+            const message = messageInputDom.value;
+
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+
+</html>
